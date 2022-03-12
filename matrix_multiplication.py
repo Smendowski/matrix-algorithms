@@ -3,6 +3,8 @@ import math
 import threading
 import numpy as np
 
+from typing import Tuple
+
 sys.setrecursionlimit(10**7)
 threading.stack_size(2**27)
 
@@ -29,7 +31,7 @@ def traditional_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     return np.array(final_matrix)
 
 
-def strassen_2D(A, B):
+def strassen_2D(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     P1 = (A[0][0] + A[1][1]) * (B[0][0] + B[1][1])
     P2 = (A[1][0] + A[1][1]) * B[0][0]
     P3 = A[0][0] * (B[0][1] - B[1][1])
@@ -43,7 +45,8 @@ def strassen_2D(A, B):
            ])
 
 
-def split_matrix_into_quadrants(A: np.ndarray):
+def split_matrix_into_quadrants(A: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+
     size = len(A)
     split_point = size // 2
 
@@ -134,31 +137,35 @@ def strassen_recursive_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
         add_matrices(B_21, B_22)
     )
 
-    top_left = substract_matrices(
+    # Top Left Quadrant
+    C_11 = substract_matrices(
         add_matrices(P1, P4),
         add_matrices(P5, P7)
     )
 
-    top_right = add_matrices(P3, P5)
+    # Top Right Quadrant
+    C_12 = add_matrices(P3, P5)
 
-    bottom_left = add_matrices(P2, P4)
+    # Bottom Left Quadrant
+    C_21 = add_matrices(P2, P4)
 
-    bottom_right = add_matrices(
+    # Bottom Right Quadrant
+    C_22 = add_matrices(
         substract_matrices(P1, P2),
         add_matrices(P3, P6)
     )
 
     final_matrix = []
 
-    for idx in range(len(top_right)):
+    for idx in range(len(C_12)):
         # Construct the top of the final matrix
         # Top = Top Left Quadrant + Top Right Quadrant
-        final_matrix.append(list(top_left[idx]) + list(top_left[idx]))
+        final_matrix.append(list(C_11[idx]) + list(C_12[idx]))
 
-    for idx in range(len(bottom_right)):
+    for idx in range(len(C_22)):
         # Construct the bottom of the final matrix
         # Bottom = Bottom Left Quadrant + Bottom Right Quadrant
-        final_matrix.append(list(bottom_left[idx]) + list(bottom_right[idx]))
+        final_matrix.append(list(C_21[idx]) + list(C_22[idx]))
 
     return np.array(final_matrix)
 
