@@ -8,6 +8,8 @@ from typing import Tuple
 sys.setrecursionlimit(10**7)
 threading.stack_size(2**27)
 
+global FLOATING_POINT_OPERATIONS
+
 
 def traditional_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     final_matrix = []
@@ -99,6 +101,9 @@ def substract_matrices(A: np.ndarray, B: np.ndarray) -> np.ndarray:
 
 
 def strassen_recursive_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    global FLOATING_POINT_OPERATIONS
+    FLOATING_POINT_OPERATIONS += 25
+
     # Base Case
     if A.shape == (2, 2):
         return strassen_2D(A, B)
@@ -222,6 +227,8 @@ def multiply_matrices(A: np.ndarray, B: np.ndarray, l: int) -> np.array:
 
 
 if __name__ == "__main__":
+    FLOATING_POINT_OPERATIONS = 0
+
     A = np.array([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]])
     B = np.array([[1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4], [1, 2, 3, 4]])
 
@@ -230,6 +237,7 @@ if __name__ == "__main__":
     if result is not None:
         print(f"Result of Matrix Multiplication: \n {result}")
         print(f"Result shape: {result.shape})")
+        print(f"Floating Point operations: {FLOATING_POINT_OPERATIONS}")
 
         # Post-multiplication check
         if A.shape != (1,) and B.shape != (1,):
