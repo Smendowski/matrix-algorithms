@@ -13,7 +13,34 @@ threading.stack_size(2**27)
 global FLOATING_POINT_OPERATIONS
 
 
+def timeit(func):
+    is_evaluating = False
+
+    @wraps(func)
+    def timeit_wrapper(*args, **kwargs):
+        nonlocal is_evaluating
+        if is_evaluating:
+            return func(*args, **kwargs)
+        else:
+            start_time = time.perf_counter()
+            is_evaluating = True
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                is_evaluating = False
+
+            end_time = time.perf_counter()
+            total_time = end_time - start_time
+            print(f'{func.__name__} took {total_time:.4f} seconds')
+            return result
+
+    return timeit_wrapper
+
+
+@timeit
 def traditional_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+    global FLOATING_POINT_OPERATIONS
+
     final_matrix = []
 
     for row_idx_A in range(A.shape[0]):
@@ -26,6 +53,8 @@ def traditional_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
             for row_elem_A in range(A.shape[0]):
                 row_col_product += \
                     A[row_idx_A][row_elem_A]*B[col_elem_B][col_idx_B]
+
+                FLOATING_POINT_OPERATIONS += 2
 
                 col_elem_B = col_elem_B + 1
 
@@ -50,7 +79,6 @@ def strassen_2D(A: np.ndarray, B: np.ndarray) -> np.ndarray:
 
 
 def split_matrix_into_quadrants(A: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
-
     size = len(A)
     split_point = size // 2
 
@@ -100,30 +128,6 @@ def substract_matrices(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     ]
 
     return np.array(final_matrix)
-
-
-def timeit(func):
-    is_evaluating = False
-
-    @wraps(func)
-    def timeit_wrapper(*args, **kwargs):
-        nonlocal is_evaluating
-        if is_evaluating:
-            return func(*args, **kwargs)
-        else:
-            start_time = time.perf_counter()
-            is_evaluating = True
-            try:
-                result = func(*args, **kwargs)
-            finally:
-                is_evaluating = False
-
-            end_time = time.perf_counter()
-            total_time = end_time - start_time
-            print(f'{func.__name__} took {total_time:.4f} seconds')
-            return result
-
-    return timeit_wrapper
 
 
 @timeit
