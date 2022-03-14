@@ -54,9 +54,12 @@ def traditional_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
                 row_col_product += \
                     A[row_idx_A][row_elem_A]*B[col_elem_B][col_idx_B]
 
-                FLOATING_POINT_OPERATIONS += 2
-
                 col_elem_B = col_elem_B + 1
+
+                # Multiplication
+                FLOATING_POINT_OPERATIONS += 1
+            # Addition
+            FLOATING_POINT_OPERATIONS += 1
 
             final_row.append(row_col_product)
         final_matrix.append(final_row)
@@ -133,6 +136,9 @@ def substract_matrices(A: np.ndarray, B: np.ndarray) -> np.ndarray:
 @timeit
 def strassen_recursive_algorithm(A: np.ndarray, B: np.ndarray) -> np.ndarray:
     global FLOATING_POINT_OPERATIONS
+
+    # Each invokation of matrix multiplication using Strassen Algorithm
+    # is a recursive multiplication: 7 multiplications and 18 additions
     FLOATING_POINT_OPERATIONS += 25
 
     # Base Case
