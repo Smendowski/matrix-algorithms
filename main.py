@@ -1,13 +1,17 @@
 import sys
 import threading
 from enum import Enum
+import argparse
 
 import numpy as np
 
 from multiplication import call_matrix_mutliplication_interface
 from inversion import call_matrix_inversion_interface
-from factorization import call_matrix_factorization_interface, \
-     calculate_determinant_based_on_LU_matrices
+from factorization import (
+    call_matrix_factorization_interface,
+    calculate_determinant_based_on_LU_matrices
+)
+
 import config
 
 sys.setrecursionlimit(10**7)
@@ -22,16 +26,32 @@ class Operations(Enum):
 
 
 def main() -> None:
-    operation = Operations.Factorization
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-m', '--multiplication', action='store_true')
+    parser.add_argument('-i', '--inversion', action='store_true')
+    parser.add_argument('-f', '--factorization', action='store_true')
+    args = parser.parse_args()
 
+    if args.multiplication:
+        operation = Operations.Multiplication
+    elif args.inversion:
+        operation = Operations.Inversion
+    elif args.factorization:
+        operation = Operations.Factorization
+    else:
+        print("Incorrect argument specified.")
+        raise SystemExit
+
+    execute_operation(operation)
+
+
+def execute_operation(operation: Operations):
     if operation.name == Operations.Multiplication.name:
         run_multiplication_logic()
     elif operation.name == Operations.Inversion.name:
         run_inversion_logic()
     elif operation.name == Operations.Factorization.name:
         run_factorization_logic()
-    else:
-        print(f"Incorrect operation: {operation}")
 
 
 def run_multiplication_logic():
