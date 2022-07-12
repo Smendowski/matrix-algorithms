@@ -143,7 +143,7 @@ def multiply_matrices(
 
 
 @timeit
-def matrix_mutliplication_interface(
+def call_matrix_mutliplication_interface(
     A: np.ndarray, B: np.ndarray,
     l: int  # noqa: E741
 ) -> np.array:

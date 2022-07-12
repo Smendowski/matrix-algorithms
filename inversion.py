@@ -85,7 +85,7 @@ def inverse(matrix: np.ndarray, l:int) -> np.ndarray:  # noqa E741
 
 
 @timeit
-def matrix_inversion_interface(
+def call_matrix_inversion_interface(
     matrix: np.ndarray, l: int   # noqa E741
 ) -> np.ndarray:
     return inverse(matrix, l)

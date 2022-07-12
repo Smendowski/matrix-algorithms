@@ -70,7 +70,7 @@ def calculate_determinant_based_on_LU_matrices(
 
 
 @timeit
-def matrix_factorization_interface(
+def call_matrix_factorization_interface(
     matrix: np.ndarray, l: int  # noqa: E741
 ) -> LU:
     return LU_factorization(matrix, l)
