@@ -67,7 +67,9 @@ def run_multiplication_logic():
             A, B, matrix_mul_thr)
 
     if result is not None:
-        print(f"Result \n {result}")
+        print(f"Input matrix A:\n {A}")
+        print(f"Input matrix B:\n {B}")
+        print(f"A*B Multiplication Result \n {result}")
         print(f"Result Shape: {result.shape})")
         print(f"FlOps: {config.FLOATING_POINT_OPERATIONS}")
 
@@ -79,7 +81,7 @@ def run_multiplication_logic():
 
 def run_inversion_logic():
     matrix_mul_thr = 3
-    matrix = np.random.randint(1, 10, size=(2**5, 2**5))
+    matrix = np.random.randint(1, 10, size=(2**2, 2**2))
 
     if config.MEASURE_INVERSION_TIME:
         result = call_matrix_inversion_interface(
@@ -89,14 +91,15 @@ def run_inversion_logic():
             matrix, matrix_mul_thr)
 
     if result is not None:
-        print(f"Result \n {result}")
+        print(f"Input matrix A:\n {matrix}")
+        print(f"Inversion Result:\n {result}")
         print(f"Result Shape: {result.shape})")
         print(f"FlOps: {config.FLOATING_POINT_OPERATIONS}")
 
 
 def run_factorization_logic():
     matrix_mul_thr = 3
-    matrix = np.random.randint(1, 10, size=(2**5, 2**5))
+    matrix = np.random.randint(1, 10, size=(2**2, 2**2))
 
     if config.MEASURE_FACTORIZATION_TIME:
         L_result, U_result = \
@@ -108,14 +111,15 @@ def run_factorization_logic():
                 matrix, matrix_mul_thr)
 
     if L_result is not None and U_result is not None:
-        print(f"L \n {L_result}")
-        print(f"L Shape: {L_result.shape})")
-        print(f"U \n {U_result}")
-        print(f"U Shape: {U_result.shape})")
+        print(f"Input matrix A:\n {matrix}")
+        print(f"L Result\n {L_result}")
+        print(f"L Shape: {L_result.shape}")
+        print(f"U Result:\n {U_result}")
+        print(f"U Shape: {U_result.shape}")
         print(f"FlOps: {config.FLOATING_POINT_OPERATIONS}")
         determinant = calculate_determinant_based_on_LU_matrices(
             L_result, U_result)
-        print(f"Determinant: {determinant:.4f}")
+        print(f"Determinant: {determinant:.2f}")
 
 
 if __name__ == '__main__':
