@@ -38,7 +38,7 @@ def LU_factorization_2D(matrix: np.ndarray, l:int) -> LU:  # noqa E741
 
 
 def LU_factorization(matrix: np.ndarray, l: int):  # noqa E741
-    if isinstance(matrix, np.int32) or isinstance(matrix, np.float64):
+    if isinstance(matrix, (np.int32, np.int64, np.float32, np.float64)):
         return (np.array(1), np.array(matrix))
     elif matrix.shape == (2, 2):
         return LU_factorization_2D(matrix, l)
